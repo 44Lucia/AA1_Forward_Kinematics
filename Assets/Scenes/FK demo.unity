@@ -778,12 +778,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6044df8858e4aac4fa16a60de5c97b98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Joint0: {fileID: 0}
-  Joint1: {fileID: 0}
-  Joint2: {fileID: 0}
-  endFactor: {fileID: 0}
-  target: {fileID: 0}
+  Joint1: {fileID: 1032247121}
+  Joint2: {fileID: 7685827}
+  endFactor: {fileID: 2101737982}
+  target: {fileID: 944503920}
   alpha: 0.1
+  tolerance: 1
 --- !u!33 &1349360498469210821
 MeshFilter:
   m_ObjectHideFlags: 0
