@@ -1,26 +1,52 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class ForwardKinematics2D : MonoBehaviour
+public class MyRobotController : MonoBehaviour
 {
-    [SerializeField] private Joint joint1;
+    [Header("Joints"), SerializeField] private Joint joint1;
     [SerializeField] private Joint joint2;
     [SerializeField] private Joint joint3;
+
+    private readonly Keyboard keyboard = Keyboard.current;
+    private int currentJointIndex = 0;
 
     private void Start()
     {
         joint1.Initialize(joint2);
         joint2.Initialize(joint3);
-
-        joint1.transform.LookAt(joint2.transform);
-        joint2.transform.LookAt(joint3.transform);
     }
 
-    void Update()
+    private void Update()
     {
-        //joint1.transform.Rotate(Vector3.left, joint1.RotationSpeed * Time.deltaTime * Input.GetAxis("Vertical"));
+        HandleInput();
+        HandleJoints();
+    }
 
-        //joint2.transform.position = joint1.transform.position + joint1.transform.rotation * joint1.DistanceToNextJoint;
+    private void HandleInput()
+    {
+        if (keyboard.tabKey.wasPressedThisFrame)
+        {
+            currentJointIndex = (currentJointIndex + 1) % 3;
+        }
+    }
 
-        //joint2.transform.Rotate(Vector3.left, joint2.RotationSpeed * Time.deltaTime * Input.GetAxis("Horizontal"));
+    private void HandleJoints()
+    {
+        float verticalInput = keyboard.upArrowKey.isPressed ? 1f : keyboard.downArrowKey.isPressed ? -1f : 0f;
+        switch (currentJointIndex)
+        {
+            case 0:
+                joint1.transform.Rotate(Vector3.left, joint1.RotationSpeed * Time.deltaTime * verticalInput);
+                break;
+            case 1:
+                joint2.transform.Rotate(Vector3.left, joint2.RotationSpeed * Time.deltaTime * verticalInput);
+                break;
+            case 2:
+                joint3.transform.Rotate(Vector3.left, joint3.RotationSpeed * Time.deltaTime * verticalInput);
+                break;
+        }
+
+        joint2.transform.position = joint1.transform.position + joint1.transform.rotation * joint1.DistanceToNextJoint;
+        joint3.transform.position = joint2.transform.position + joint2.transform.rotation * joint2.DistanceToNextJoint;
     }
 }
