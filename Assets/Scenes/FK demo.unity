@@ -252,6 +252,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -377,6 +378,33 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a22a85206f2b4e45bff2cb35799a2eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1882628215}
+  minPitchDeg: -30
+  maxPitchDeg: 70
+  yawSpeed: 600
+  pitchSpeed: 560
+  zoomMin: 2.5
+  zoomMax: 20
+  zoomSpeed: 6
+  followLerp: 12
+  avoidClipping: 1
+  clipSphereRadius: 0.2
+  clipMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  toggleLockKey: 9
 --- !u!1 &1357716654
 GameObject:
   m_ObjectHideFlags: 0
@@ -538,11 +566,48 @@ PrefabInstance:
       propertyPath: m_Name
       value: Excavator
       objectReference: {fileID: 0}
+    - target: {fileID: 8920615321687851043, guid: ac1c85fa749fc2a4e93e3966791418d4, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8920615321687851043, guid: ac1c85fa749fc2a4e93e3966791418d4, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 1882628216}
   m_SourcePrefab: {fileID: 100100000, guid: ac1c85fa749fc2a4e93e3966791418d4, type: 3}
+--- !u!1 &1882628211 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8920615321687851043, guid: ac1c85fa749fc2a4e93e3966791418d4, type: 3}
+  m_PrefabInstance: {fileID: 1579230870}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1882628215 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8108648612989033113, guid: ac1c85fa749fc2a4e93e3966791418d4, type: 3}
+  m_PrefabInstance: {fileID: 1579230870}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1882628216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1882628211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bacb6e46b52fb68438e746f67b5294fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  linearSpeed: 2.5
+  angularSpeedDeg: 90
+  heightOffset: 0
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  snapToGround: 1
+  rayLength: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
