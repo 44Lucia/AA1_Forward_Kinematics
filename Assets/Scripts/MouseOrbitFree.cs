@@ -65,14 +65,13 @@ namespace Scripts
                 LockCursor(cursorLocked);
             }
 
-            float dt = Time.deltaTime;
             if (cursorLocked)
             {
                 float dx = Input.GetAxisRaw("Mouse X");
                 float dy = Input.GetAxisRaw("Mouse Y");
 
-                yawRad   += Deg2Rad(yawSpeed   * dx * dt);
-                pitchRad -= Deg2Rad(pitchSpeed * dy * dt);
+                yawRad   += Deg2Rad(yawSpeed   * dx);
+                pitchRad -= Deg2Rad(pitchSpeed * dy);
 
                 pitchRad = Clamp(pitchRad, Deg2Rad(minPitchDeg), Deg2Rad(maxPitchDeg));
             }

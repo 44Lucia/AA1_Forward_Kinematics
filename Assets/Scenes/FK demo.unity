@@ -375,8 +375,8 @@ Transform:
   m_GameObject: {fileID: 945542273}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.89, y: 0.509, z: 0.55}
-  m_LocalScale: {x: 0.779584, y: 0.779584, z: 0.779584}
+  m_LocalPosition: {x: -7.73, y: 0.509, z: 0.55}
+  m_LocalScale: {x: 1.7580398, y: 1.7580398, z: 1.7580398}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -534,8 +534,8 @@ MonoBehaviour:
   target: {fileID: 1882628215}
   minPitchDeg: -30
   maxPitchDeg: 70
-  yawSpeed: 600
-  pitchSpeed: 560
+  yawSpeed: 15
+  pitchSpeed: 10
   zoomMin: 2.5
   zoomMax: 20
   zoomSpeed: 6
@@ -798,21 +798,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aab648027f9f02d469fa6b30351973d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 2
-  attractionStrength: 25
-  maxAttractionSpeed: 6
-  snapDistance: 0.25
-  layerMask:
+  _toggleKey: 102
+  _grabbableMask:
     serializedVersion: 2
     m_Bits: 8
-  holdPoint: {fileID: 1927780503}
-  useFixedJoint: 0
-  jointBreakForce: 2000
-  jointBreakTorque: 2000
-  magnetAlwaysOn: 1
-  inheritVelocityOnRelease: 1
-  throwBoost: 0
-  toggleKey: 101
+  _breakForce: Infinity
+  _breakTorque: Infinity
+  _requireNonKinematic: 1
+  _useAutoAnchors: 1
 --- !u!135 &1927780505
 SphereCollider:
   m_ObjectHideFlags: 0
