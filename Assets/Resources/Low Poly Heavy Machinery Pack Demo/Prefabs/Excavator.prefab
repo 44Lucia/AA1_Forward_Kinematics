@@ -140,7 +140,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 2
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8194648037754540744
 MonoBehaviour:
@@ -323,7 +323,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd0587b54f8b83c4aaa6b31ca5cdc108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <RotationSpeed>k__BackingField: 45
+  rotationSpeed: 30
+  minAngleDeg: -10
+  maxAngleDeg: 40
+  currentAngleDeg: 0
 --- !u!33 &4430166898437998982
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -424,7 +427,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd0587b54f8b83c4aaa6b31ca5cdc108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <RotationSpeed>k__BackingField: 120
+  rotationSpeed: 30
+  minAngleDeg: -10
+  maxAngleDeg: 40
+  currentAngleDeg: 0
 --- !u!33 &4755547796655965714
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -610,7 +616,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd0587b54f8b83c4aaa6b31ca5cdc108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <RotationSpeed>k__BackingField: 55
+  rotationSpeed: 30
+  minAngleDeg: -10
+  maxAngleDeg: 40
+  currentAngleDeg: 0
 --- !u!33 &6453702976955897928
 MeshFilter:
   m_ObjectHideFlags: 0
