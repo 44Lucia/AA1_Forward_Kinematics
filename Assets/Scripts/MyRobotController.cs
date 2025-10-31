@@ -1,10 +1,8 @@
 using UnityEngine;
 
 // Alias a nuestras libs
-using UVec3 = Utility.Vector3;
-using UQuat = Utility.Quaternion;
-using UEVec3 = UnityEngine.Vector3;
-using UEQuat = UnityEngine.Quaternion;
+using MyVec3 = Utility.Vector3;
+using MyQuat = Utility.Quaternion;
 
 public class MyRobotController : MonoBehaviour
 {
@@ -15,11 +13,9 @@ public class MyRobotController : MonoBehaviour
 
     private Joint[] joints;
     private int currentJointIndex = 0;
+    private float yawInput = 0f;
+    private float joint3YawDeg = 0f;
 
-    static UVec3 FromU(UEVec3 v) => new UVec3(v.x, v.y, v.z);
-    static UQuat FromU(UEQuat q) => new UQuat(q.x, q.y, q.z, q.w).Normalized();
-    static UEVec3 ToU(UVec3 v) => new UEVec3(v.x, v.y, v.z);
-    static UEQuat ToU(UQuat q) => new UEQuat(q.x, q.y, q.z, q.w);
 
     void Start()
     {
@@ -30,7 +26,7 @@ public class MyRobotController : MonoBehaviour
 
         foreach (Joint j in joints)
         {
-            j.BaseRotation = FromU(j.transform.rotation);
+            j.BaseRotation = (MyQuat)j.transform.rotation;
             j.CurrentAngleDeg = 0f;
         }
     }
@@ -46,6 +42,26 @@ public class MyRobotController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab))
             currentJointIndex = (currentJointIndex + 1) % joints.Length;
+
+        // Horizontal entry: ← / →
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            yawInput = -1f;
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            yawInput = 1f;
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow))
+        {
+            yawInput = 0f;
+        }
+
+        // Update joint3 yaw angle
+        if (currentJointIndex == 2 && System.Math.Abs(yawInput) > 1e-6f)
+        {
+            joint3YawDeg += yawInput * joint3.RotationSpeed * Time.deltaTime;
+        }
     }
 
     void ApplyLimitedRotation()
@@ -55,7 +71,7 @@ public class MyRobotController : MonoBehaviour
             (Input.GetKey(KeyCode.UpArrow) ? 1f : 0f) +
             (Input.GetKey(KeyCode.DownArrow) ? -1f : 0f);
 
-        if (System.Math.Abs(vertical) < 1e-6f) return;
+        if (System.Math.Abs(vertical) < 1e-6f && currentJointIndex != 2) return;
 
         Joint j = joints[currentJointIndex];
 
@@ -70,22 +86,43 @@ public class MyRobotController : MonoBehaviour
 
         // Rotation = base * AxisAngle(localaxis, currentAngle)
         float angleRad = Utility.MathLite.Deg2Rad(j.CurrentAngleDeg);
-        UQuat q = (j.BaseRotation * UQuat.AxisAngle(j.LocalAxis, angleRad)).Normalized();
-        j.transform.rotation = ToU(q);
+        MyQuat q = (j.BaseRotation * MyQuat.AxisAngle(j.LocalAxis, angleRad)).Normalized();
+
+        // For joint3, add yaw rotation
+        if (j == joint3)
+        {
+            MyQuat yawQuat = MyQuat.AxisAngle(MyVec3.Up, Utility.MathLite.Deg2Rad(joint3YawDeg));
+            q = (q * yawQuat).Normalized();
+        }
+
+        // Add rotation of the robot itself
+        q = ((MyQuat)transform.rotation * q).Normalized();
+
+        j.transform.rotation = (Quaternion)q;
     }
 
     void ForwardKinematics()
     {
-        // Repositions child joints based on the current pose (FK without hierarchy)
-        // J2 depends on J1
-        UVec3 p1 = FromU(joint1.transform.position);
-        UQuat r1 = FromU(joint1.transform.rotation);
-        UVec3 p2 = p1 + r1.Rotate(joint1.DistanceToNextJoint);
-        joint2.transform.position = ToU(p2);
+        // Joint 1: base rotation
+        MyQuat r1 = (MyQuat)transform.rotation * joint1.BaseRotation * MyQuat.AxisAngle(joint1.LocalAxis, Utility.MathLite.Deg2Rad(joint1.CurrentAngleDeg));
+        joint1.transform.rotation = (Quaternion)r1;
 
-        // J3 depends on J2
-        UQuat r2 = FromU(joint2.transform.rotation);
-        UVec3 p3 = p2 + r2.Rotate(joint2.DistanceToNextJoint);
-        joint3.transform.position = ToU(p3);
+        // Joint 2: relative to joint 1
+        MyQuat r2 = r1 * joint2.BaseRotation * MyQuat.AxisAngle(joint2.LocalAxis, Utility.MathLite.Deg2Rad(joint2.CurrentAngleDeg));
+        joint2.transform.rotation = (Quaternion)r2;
+
+        // Joint 3: relative to joint 2, plus yaw
+        MyQuat r3 = r2 * joint3.BaseRotation * MyQuat.AxisAngle(joint3.LocalAxis, Utility.MathLite.Deg2Rad(joint3.CurrentAngleDeg));
+        MyQuat yawQuat = MyQuat.AxisAngle(MyVec3.Up, Utility.MathLite.Deg2Rad(joint3YawDeg));
+        r3 = r3 * yawQuat;
+        joint3.transform.rotation = (Quaternion)r3;
+
+        // Use joint1's current position as the base for the chain:
+        MyVec3 p1 = (MyVec3)joint1.transform.position;
+        MyVec3 p2 = p1 + r1.Rotate(joint1.DistanceToNextJoint);
+        joint2.transform.position = (Vector3)p2;
+
+        MyVec3 p3 = p2 + r2.Rotate(joint2.DistanceToNextJoint);
+        joint3.transform.position = (Vector3)p3;
     }
 }

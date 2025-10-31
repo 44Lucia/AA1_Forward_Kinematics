@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using UVec3 = Utility.Vector3;
-using UQuat = Utility.Quaternion;
+using MyVector3 = Utility.Vector3;
+using MyQuaternion = Utility.Quaternion;
 
 public class Joint : MonoBehaviour
 {
@@ -12,11 +12,11 @@ public class Joint : MonoBehaviour
     [SerializeField] private float maxAngleDeg = 80f;
 
     [Header("Local rotation axis (e.g., (-1,0,0) = Vector3.left)")]
-    [SerializeField] private UVec3 localAxis = new UVec3(-1f, 0f, 0f);
+    [SerializeField] private MyVector3 localAxis = new(-1f, 0f, 0f);
 
-    [SerializeField, HideInInspector] private UVec3 distanceToNextJoint;
+    [SerializeField, HideInInspector] private MyVector3 distanceToNextJoint;
 
-    [SerializeField, HideInInspector] private UQuat baseRotation = UQuat.Identity;
+    [SerializeField, HideInInspector] private MyQuaternion baseRotation = MyQuaternion.Identity;
     [SerializeField, HideInInspector] private float currentAngleDeg = 0f;
 
 
@@ -26,7 +26,7 @@ public class Joint : MonoBehaviour
 
         var a = transform.localPosition;
         var b = nextJoint.transform.localPosition;
-        distanceToNextJoint = new UVec3(b.x - a.x, b.y - a.y, b.z - a.z);
+        distanceToNextJoint = new MyVector3(b.x - a.x, b.y - a.y, b.z - a.z);
     }
 
     public float RotationSpeed
@@ -47,15 +47,15 @@ public class Joint : MonoBehaviour
         set => maxAngleDeg = value;
     }
 
-    public UVec3 LocalAxis
+    public MyVector3 LocalAxis
     {
         get => localAxis;
         set => localAxis = value;
     }
 
-    public UVec3 DistanceToNextJoint => distanceToNextJoint;
+    public MyVector3 DistanceToNextJoint => distanceToNextJoint;
 
-    public UQuat BaseRotation
+    public MyQuaternion BaseRotation
     {
         get => baseRotation;
         set => baseRotation = value;

@@ -30,7 +30,7 @@ namespace Utility
 
         // Cast operators
         public static explicit operator Quaternion(UnityEngine.Quaternion v) => new(v.x, v.y, v.z, v.w);
-        public static explicit operator UnityEngine.Quaternion(Quaternion v) => new UnityEngine.Quaternion(v.x, v.y, v.z, v.w);
+        public static explicit operator UnityEngine.Quaternion(Quaternion v) => new(v.x, v.y, v.z, v.w);
 
         #endregion
 

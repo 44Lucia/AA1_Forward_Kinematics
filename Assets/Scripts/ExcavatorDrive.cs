@@ -8,8 +8,8 @@ namespace Scripts
 {
     static class UBridge
     {
-        public static UEVec3 ToU(UVec3 v)  => new UEVec3(v.x, v.y, v.z);
-        public static UEQuat ToU(UQuat q)  => new UEQuat(q.x, q.y, q.z, q.w);
+        public static UEVec3 ToU(UVec3 v)  => new(v.x, v.y, v.z);
+        public static UEQuat ToU(UQuat q)  => new(q.x, q.y, q.z, q.w);
     }
 
     public class ExcavatorDrive : MonoBehaviour
@@ -58,7 +58,7 @@ namespace Scripts
             if (System.Math.Abs(angRad) > 1e-8f)
                 rot = (rot * UQuat.AxisAngle(new UVec3(0,1,0), angRad)).Normalized();
 
-            UVec3 localForward = new UVec3(0,0,1);
+            UVec3 localForward = new(0,0,1);
             UVec3 worldForward = rot.Rotate(localForward);
             pos = pos + worldForward * (linearSpeed * fwd * dt);
 

@@ -22,7 +22,7 @@
         public static implicit operator Vector3((float x, float y, float z) t) => new(t.x, t.y, t.z);
         public static implicit operator (float x, float y, float z)(Vector3 v) => (v.x, v.y, v.z);
         public static explicit operator Vector3(UnityEngine.Vector3 v) => new(v.x, v.y, v.z);
-        public static explicit operator UnityEngine.Vector3(Vector3 v) => new UnityEngine.Vector3(v.x, v.y, v.z);
+        public static explicit operator UnityEngine.Vector3(Vector3 v) => new(v.x, v.y, v.z);
 
         #endregion
 

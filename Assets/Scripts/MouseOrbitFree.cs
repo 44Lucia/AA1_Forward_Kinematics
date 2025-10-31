@@ -10,7 +10,7 @@ namespace Scripts
     {
         [Header("Target")]
         [SerializeField] private Transform target;       
-        [SerializeField] private UVec3 targetOffset = new UVec3(0f, 1.4f, 0f); 
+        [SerializeField] private UVec3 targetOffset = new(0f, 1.4f, 0f); 
 
         [Header("Órbita")]
         [SerializeField] private float minPitchDeg = -35f;
@@ -93,13 +93,13 @@ namespace Scripts
             UQuat qYawY  = UQuat.AxisAngle(new UVec3(0f,1f,0f), yawRad);
             UQuat orbit  = (qYawY * qPitch).Normalized();
 
-            UVec3 tpos = new UVec3(target.position.x, target.position.y, target.position.z);
+            UVec3 tpos = new(target.position.x, target.position.y, target.position.z);
             UVec3 desired = tpos + targetOffset + orbit.Rotate(new UVec3(0f, 0f, -dist));
 
             if (avoidClipping)
             {
-                UEVec3 from = new UEVec3(tpos.x + targetOffset.x, tpos.y + targetOffset.y, tpos.z + targetOffset.z);
-                UEVec3 to   = new UEVec3(desired.x, desired.y, desired.z);
+                UEVec3 from = new(tpos.x + targetOffset.x, tpos.y + targetOffset.y, tpos.z + targetOffset.z);
+                UEVec3 to   = new(desired.x, desired.y, desired.z);
                 UEVec3 dir  = (to - from);
                 float  len  = dir.magnitude;
                 if (len > 1e-4f)
@@ -114,9 +114,9 @@ namespace Scripts
             }
 
             UEVec3 current = transform.position;
-            UEVec3 targetP = new UEVec3(desired.x, desired.y, desired.z);
+            UEVec3 targetP = new(desired.x, desired.y, desired.z);
             float t = (followLerp <= 0f) ? 1f : (1f - Mathf.Exp(-followLerp * Time.deltaTime));
-            UEVec3 smooth = new UEVec3(
+            UEVec3 smooth = new(
                 Lerp(current.x, targetP.x, t),
                 Lerp(current.y, targetP.y, t),
                 Lerp(current.z, targetP.z, t)
