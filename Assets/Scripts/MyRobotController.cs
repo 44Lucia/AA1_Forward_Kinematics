@@ -1,8 +1,8 @@
 using UnityEngine;
 
-// Alias a vuestras libs
-using UVec3  = Utility.Vector3;
-using UQuat  = Utility.Quaternion;
+// Alias a nuestras libs
+using UVec3 = Utility.Vector3;
+using UQuat = Utility.Quaternion;
 using UEVec3 = UnityEngine.Vector3;
 using UEQuat = UnityEngine.Quaternion;
 
@@ -18,8 +18,8 @@ public class MyRobotController : MonoBehaviour
 
     static UVec3 FromU(UEVec3 v) => new UVec3(v.x, v.y, v.z);
     static UQuat FromU(UEQuat q) => new UQuat(q.x, q.y, q.z, q.w).Normalized();
-    static UEVec3 ToU(UVec3 v)   => new UEVec3(v.x, v.y, v.z);
-    static UEQuat ToU(UQuat q)   => new UEQuat(q.x, q.y, q.z, q.w);
+    static UEVec3 ToU(UVec3 v) => new UEVec3(v.x, v.y, v.z);
+    static UEQuat ToU(UQuat q) => new UEQuat(q.x, q.y, q.z, q.w);
 
     void Start()
     {
@@ -30,16 +30,16 @@ public class MyRobotController : MonoBehaviour
 
         foreach (Joint j in joints)
         {
-            j.BaseRotation   = FromU(j.transform.rotation); 
-            j.CurrentAngleDeg = 0f;                        
+            j.BaseRotation = FromU(j.transform.rotation);
+            j.CurrentAngleDeg = 0f;
         }
     }
 
     void Update()
     {
         HandleInput();
-        ApplyLimitedRotation();  
-        ForwardKinematics();     
+        ApplyLimitedRotation();
+        ForwardKinematics();
     }
 
     void HandleInput()
@@ -52,7 +52,7 @@ public class MyRobotController : MonoBehaviour
     {
         // Vertical entry: ↑ / ↓
         float vertical =
-            (Input.GetKey(KeyCode.UpArrow)   ? 1f : 0f) +
+            (Input.GetKey(KeyCode.UpArrow) ? 1f : 0f) +
             (Input.GetKey(KeyCode.DownArrow) ? -1f : 0f);
 
         if (System.Math.Abs(vertical) < 1e-6f) return;
@@ -64,13 +64,13 @@ public class MyRobotController : MonoBehaviour
 
         // Clamp to the allowed range (use it from your libs)
         float targetDeg = Utility.MathLite.Clamp(
-            j.CurrentAngleDeg + deltaDeg, j.MinAngleDeg, j.MaxAngleDeg); 
+            j.CurrentAngleDeg + deltaDeg, j.MinAngleDeg, j.MaxAngleDeg);
 
         j.CurrentAngleDeg = targetDeg;
 
         // Rotation = base * AxisAngle(localaxis, currentAngle)
-        float angleRad = Utility.MathLite.Deg2Rad(j.CurrentAngleDeg);     
-        UQuat q        = (j.BaseRotation * UQuat.AxisAngle(j.LocalAxis, angleRad)).Normalized(); 
+        float angleRad = Utility.MathLite.Deg2Rad(j.CurrentAngleDeg);
+        UQuat q = (j.BaseRotation * UQuat.AxisAngle(j.LocalAxis, angleRad)).Normalized();
         j.transform.rotation = ToU(q);
     }
 
@@ -80,7 +80,7 @@ public class MyRobotController : MonoBehaviour
         // J2 depends on J1
         UVec3 p1 = FromU(joint1.transform.position);
         UQuat r1 = FromU(joint1.transform.rotation);
-        UVec3 p2 = p1 + r1.Rotate(joint1.DistanceToNextJoint);           
+        UVec3 p2 = p1 + r1.Rotate(joint1.DistanceToNextJoint);
         joint2.transform.position = ToU(p2);
 
         // J3 depends on J2

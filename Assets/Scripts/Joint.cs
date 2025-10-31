@@ -9,7 +9,7 @@ public class Joint : MonoBehaviour
 
     [Header("Limits (degrees)")]
     [SerializeField] private float minAngleDeg = -10f;
-    [SerializeField] private float maxAngleDeg =  80f;
+    [SerializeField] private float maxAngleDeg = 80f;
 
     [Header("Local rotation axis (e.g., (-1,0,0) = Vector3.left)")]
     [SerializeField] private UVec3 localAxis = new UVec3(-1f, 0f, 0f);
@@ -28,7 +28,7 @@ public class Joint : MonoBehaviour
         var b = nextJoint.transform.localPosition;
         distanceToNextJoint = new UVec3(b.x - a.x, b.y - a.y, b.z - a.z);
     }
-    
+
     public float RotationSpeed
     {
         get => rotationSpeed;
