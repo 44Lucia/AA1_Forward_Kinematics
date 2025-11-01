@@ -96,8 +96,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8200608568320234365}
-  - component: {fileID: 4951987809069403828}
   - component: {fileID: 8194648037754540744}
+  - component: {fileID: 860629591918228256}
   - component: {fileID: 2808211302067420937}
   m_Layer: 0
   m_Name: Hold Point
@@ -115,14 +115,34 @@ Transform:
   m_GameObject: {fileID: 2321213369324677837}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.1, y: -1.07, z: -0.75}
+  m_LocalPosition: {x: 0, y: -0.78, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2286672371599672602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &4951987809069403828
-SphereCollider:
+--- !u!114 &8194648037754540744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2321213369324677837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aab648027f9f02d469fa6b30351973d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toggleKey: 32
+  grabbableMask:
+    serializedVersion: 2
+    m_Bits: 8
+  breakForce: Infinity
+  breakTorque: Infinity
+  requireNonKinematic: 1
+  useAutoAnchors: 1
+--- !u!136 &860629591918228256
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -139,29 +159,11 @@ SphereCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1.5
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8194648037754540744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2321213369324677837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aab648027f9f02d469fa6b30351973d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _toggleKey: 102
-  _grabbableMask:
-    serializedVersion: 2
-    m_Bits: 8
-  _breakForce: Infinity
-  _breakTorque: Infinity
-  _requireNonKinematic: 1
-  _useAutoAnchors: 1
 --- !u!54 &2808211302067420937
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -289,6 +291,7 @@ GameObject:
   - component: {fileID: 8421673778114993235}
   - component: {fileID: 4430166898437998982}
   - component: {fileID: 5714684036239135575}
+  - component: {fileID: 3336801037365645561}
   m_Layer: 0
   m_Name: Joint1
   m_TagString: Untagged
@@ -323,7 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd0587b54f8b83c4aaa6b31ca5cdc108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 30
+  rotationSpeed: 35
   minAngleDeg: -10
   maxAngleDeg: 40
   currentAngleDeg: 0
@@ -380,6 +383,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3336801037365645561
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3409657277816794421}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 5825387610780336340, guid: a94920638fc3ee645ae131f8202afcee, type: 3}
 --- !u!1 &3736623205553331755
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,6 +417,7 @@ GameObject:
   - component: {fileID: 5395755744748452040}
   - component: {fileID: 4755547796655965714}
   - component: {fileID: 3694719221858629182}
+  - component: {fileID: 2985150029781229242}
   m_Layer: 0
   m_Name: Joint3
   m_TagString: Untagged
@@ -427,7 +453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd0587b54f8b83c4aaa6b31ca5cdc108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 30
+  rotationSpeed: 60
   minAngleDeg: -10
   maxAngleDeg: 40
   currentAngleDeg: 0
@@ -484,6 +510,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &2985150029781229242
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3736623205553331755}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8839368762345780380, guid: a94920638fc3ee645ae131f8202afcee, type: 3}
 --- !u!1 &5263413071283268232
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,6 +630,7 @@ GameObject:
   - component: {fileID: 3205743462459224651}
   - component: {fileID: 6453702976955897928}
   - component: {fileID: 4884272360091594348}
+  - component: {fileID: 5433337739597953431}
   m_Layer: 0
   m_Name: Joint2
   m_TagString: Untagged
@@ -616,9 +665,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd0587b54f8b83c4aaa6b31ca5cdc108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 30
-  minAngleDeg: -10
-  maxAngleDeg: 40
+  rotationSpeed: 45
+  minAngleDeg: -30
+  maxAngleDeg: 80
   currentAngleDeg: 0
 --- !u!33 &6453702976955897928
 MeshFilter:
@@ -673,6 +722,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &5433337739597953431
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6400599018187756831}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2405932098073290069, guid: a94920638fc3ee645ae131f8202afcee, type: 3}
 --- !u!1 &8920615321687851043
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,6 +757,7 @@ GameObject:
   - component: {fileID: 4488643797870714145}
   - component: {fileID: 5127470663927584060}
   - component: {fileID: 6975117250885001718}
+  - component: {fileID: 5492193484389158767}
   m_Layer: 0
   m_Name: Excavator
   m_TagString: Player
@@ -739,7 +811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bacb6e46b52fb68438e746f67b5294fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  linearSpeed: 2.5
+  linearSpeed: 3.5
   angularSpeedDeg: 90
   heightOffset: 0
   groundMask:
@@ -801,3 +873,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &5492193484389158767
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8920615321687851043}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6590345234891300153, guid: a94920638fc3ee645ae131f8202afcee, type: 3}

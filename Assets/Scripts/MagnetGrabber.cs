@@ -1,27 +1,33 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-[DisallowMultipleComponent]
 [RequireComponent(typeof(Collider))]
-[RequireComponent(typeof(Rigidbody))]
 public class MagnetGrabber : MonoBehaviour
 {
-    [SerializeField] private KeyCode _toggleKey = KeyCode.F;
-    [SerializeField] private LayerMask _grabbableMask = ~0;   
-    [SerializeField] private float _breakForce  = Mathf.Infinity;
-    [SerializeField] private float _breakTorque = Mathf.Infinity;
-    [SerializeField] private bool _requireNonKinematic = true; 
-    [SerializeField] private bool _useAutoAnchors = true;     
+    [FormerlySerializedAs("_toggleKey")] [SerializeField]
+    private KeyCode toggleKey = KeyCode.Space;
 
-    private FixedJoint _currentJoint;     
-    private Rigidbody  _grabbedBody;     
-    private readonly HashSet<Rigidbody> _contacts = new(); 
+    [FormerlySerializedAs("_grabbableMask")] [SerializeField]
+    private LayerMask grabbableMask = ~0;
+
+    [FormerlySerializedAs("_breakForce")] [SerializeField]
+    private float breakForce = Mathf.Infinity;
+
+    [FormerlySerializedAs("_breakTorque")] [SerializeField]
+    private float breakTorque = Mathf.Infinity;
+
+    [FormerlySerializedAs("_requireNonKinematic")] [SerializeField]
+    private bool requireNonKinematic = true;
+
+    [FormerlySerializedAs("_useAutoAnchors")] [SerializeField]
+    private bool useAutoAnchors = true;
+
+    private FixedJoint currentJoint;
+    private readonly HashSet<Rigidbody> contacts = new();
 
     private void Awake()
     {
-        Collider col = GetComponent<Collider>();
-        col.isTrigger = false;
-
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
         rb.useGravity = false;
@@ -29,53 +35,58 @@ public class MagnetGrabber : MonoBehaviour
 
     private void OnEnable()
     {
-        _contacts.Clear();
-        _currentJoint = null;
-        _grabbedBody  = null;
+        contacts.Clear();
+        currentJoint = null;
     }
 
     private void OnDisable()
     {
         Release();
-        _contacts.Clear();
+        contacts.Clear();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(_toggleKey))
+        if (Input.GetKeyDown(toggleKey))
         {
-            if (_currentJoint != null) { Release(); }
-            else { TryAttachFromContacts(); }
+            if (currentJoint)
+            {
+                Release();
+            }
+            else
+            {
+                TryAttachFromContacts();
+            }
         }
     }
 
-    private void OnCollisionEnter(Collision c)
+    private void OnTriggerEnter(Collider c)
     {
-        Rigidbody rb = c.rigidbody;
+        Rigidbody rb = c.attachedRigidbody;
         if (!rb) return;
         if (!IsGrabbable(rb)) return;
-        _contacts.Add(rb);
+        contacts.Add(rb);
     }
 
-    private void OnCollisionStay(Collision c)
+    private void OnTriggerStay(Collider c)
     {
-        Rigidbody rb = c.rigidbody;
+        Rigidbody rb = c.attachedRigidbody;
         if (!rb) return;
         if (!IsGrabbable(rb)) return;
-        _contacts.Add(rb);
+        contacts.Add(rb);
     }
 
-    private void OnCollisionExit(Collision c)
+    private void OnTriggerExit(Collider c)
     {
-        Rigidbody rb = c.rigidbody;
+        Rigidbody rb = c.attachedRigidbody;
         if (!rb) return;
-        _contacts.Remove(rb);
+        contacts.Remove(rb);
     }
 
     private bool IsGrabbable(Rigidbody rb)
     {
-        if (((1 << rb.gameObject.layer) & _grabbableMask) == 0) return false;
-        if (_requireNonKinematic && rb.isKinematic) return false;
+        if (((1 << rb.gameObject.layer) & grabbableMask) == 0) return false;
+        if (requireNonKinematic && rb.isKinematic) return false;
 
         if (rb == GetComponent<Rigidbody>()) return false;
         return true;
@@ -83,39 +94,37 @@ public class MagnetGrabber : MonoBehaviour
 
     private void TryAttachFromContacts()
     {
-        if (_currentJoint != null) return;
+        if (currentJoint != null) return;
 
-        foreach (Rigidbody rb in _contacts)
+        foreach (Rigidbody rb in contacts)
         {
             if (!rb) continue;
             if (!IsGrabbable(rb)) continue;
 
             FixedJoint fj = gameObject.AddComponent<FixedJoint>();
             fj.connectedBody = rb;
-            fj.breakForce    = _breakForce;
-            fj.breakTorque   = _breakTorque;
+            fj.breakForce = breakForce;
+            fj.breakTorque = breakTorque;
             fj.enablePreprocessing = false;
 
-            fj.autoConfigureConnectedAnchor = _useAutoAnchors;
+            fj.autoConfigureConnectedAnchor = useAutoAnchors;
 
-            _currentJoint = fj;
-            _grabbedBody  = rb;
+            currentJoint = fj;
             return;
         }
     }
 
     private void Release()
     {
-        if (_currentJoint != null) {
-            Destroy(_currentJoint);
-            _currentJoint = null;
+        if (currentJoint != null)
+        {
+            Destroy(currentJoint);
+            currentJoint = null;
         }
-        _grabbedBody = null;
     }
 
     private void OnJointBreak(float breakForce)
     {
-        _currentJoint = null;
-        _grabbedBody  = null;
+        currentJoint = null;
     }
 }
